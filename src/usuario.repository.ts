@@ -3,6 +3,9 @@ export class UsuarioRepository {
 
   salvar(usuario: object) {
     this.usuarios.push(usuario);
-    console.log(this.usuarios);
+  }
+
+  listar() {
+    return this.usuarios;
   }
 }
