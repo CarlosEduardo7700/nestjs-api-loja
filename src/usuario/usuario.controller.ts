@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsuarioRepository } from './usuario.repository';
 import { DadosDeCadastroUsuarioDTO } from './dto/DadosDeCadastroUsuario.dto';
+import { UsuarioEntity } from './usuario.entity';
+import { v4 as uuid } from 'uuid';
 
 @Controller('/usuarios')
 export class UsuarioController {
@@ -8,8 +10,16 @@ export class UsuarioController {
 
   @Post()
   cadastrar(@Body() dadosDoUsuario: DadosDeCadastroUsuarioDTO): object {
-    this.usuarioRepository.salvar(dadosDoUsuario);
-    return dadosDoUsuario;
+    const usuarioEntity = new UsuarioEntity();
+
+    usuarioEntity.email = dadosDoUsuario.email;
+    usuarioEntity.senha = dadosDoUsuario.senha;
+    usuarioEntity.nome = dadosDoUsuario.nome;
+    usuarioEntity.id = uuid();
+
+    this.usuarioRepository.salvar(usuarioEntity);
+
+    return { id: usuarioEntity.id, message: 'Usuário cadastrado com sucesso!' };
   }
 
   @Get()

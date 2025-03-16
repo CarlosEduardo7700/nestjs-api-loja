@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { DadosDoUsuarioDTO } from './dto/DadosDoUsuario.dto';
-import { DadosDeCadastroUsuarioDTO } from './dto/DadosDeCadastroUsuario.dto';
+import { UsuarioEntity } from './usuario.entity';
 
 @Injectable()
 export class UsuarioRepository {
-  private usuarios: DadosDoUsuarioDTO[] = [];
+  private usuarios: UsuarioEntity[] = [];
 
-  salvar(usuario: DadosDeCadastroUsuarioDTO) {
+  salvar(usuario: UsuarioEntity) {
     this.usuarios.push(usuario);
   }
 
