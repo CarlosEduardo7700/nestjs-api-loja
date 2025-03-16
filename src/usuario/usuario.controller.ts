@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UsuarioRepository } from './usuario.repository';
 import { DadosDeCadastroUsuarioDTO } from './dto/DadosDeCadastroUsuario.dto';
 import { UsuarioEntity } from './usuario.entity';
