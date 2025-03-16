@@ -21,7 +21,7 @@ export class UsuarioRepository {
     return possivelUsuario !== undefined;
   }
 
-  atualizar(id: string, dadosParaAtualizar: Partial<UsuarioEntity>) {
+  private buscarPorId(id: string) {
     const possivelUsuario = this.usuarios.find(
       (usuarioSalvo) => usuarioSalvo.id === id,
     );
@@ -30,14 +30,28 @@ export class UsuarioRepository {
       throw new Error('Usuário não encontrado!');
     }
 
+    return possivelUsuario;
+  }
+
+  atualizar(id: string, dadosParaAtualizar: Partial<UsuarioEntity>) {
+    const usuarioEncontrado = this.buscarPorId(id);
+
     Object.entries(dadosParaAtualizar).forEach(([chave, valor]) => {
       if (chave === 'id') {
         return;
       }
 
-      possivelUsuario[chave] = valor;
+      usuarioEncontrado[chave] = valor;
     });
 
-    return possivelUsuario;
+    return usuarioEncontrado;
+  }
+
+  remover(id: string) {
+    const usuarioEncontrado = this.buscarPorId(id);
+
+    this.usuarios = this.usuarios.filter((usuario) => usuario.id !== id);
+
+    return usuarioEncontrado;
   }
 }
