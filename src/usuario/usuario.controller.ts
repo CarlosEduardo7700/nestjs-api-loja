@@ -3,6 +3,7 @@ import { UsuarioRepository } from './usuario.repository';
 import { DadosDeCadastroUsuarioDTO } from './dto/DadosDeCadastroUsuario.dto';
 import { UsuarioEntity } from './usuario.entity';
 import { v4 as uuid } from 'uuid';
+import { DadosParaListagemUsuarioDTO } from './dto/DadosParaListagemUsuario.dto';
 
 @Controller('/usuarios')
 export class UsuarioController {
@@ -19,11 +20,22 @@ export class UsuarioController {
 
     this.usuarioRepository.salvar(usuarioEntity);
 
-    return { id: usuarioEntity.id, message: 'Usuário cadastrado com sucesso!' };
+    return {
+      usuario: new DadosParaListagemUsuarioDTO(
+        usuarioEntity.id,
+        usuarioEntity.nome,
+      ),
+      message: 'Usuário cadastrado com sucesso!',
+    };
   }
 
   @Get()
-  listarTodos(): object[] {
-    return this.usuarioRepository.listar();
+  listarTodos(): DadosParaListagemUsuarioDTO[] {
+    const usuariosCadastrados = this.usuarioRepository.listar();
+    const listaDeUsuarios = usuariosCadastrados.map(
+      (usuario) => new DadosParaListagemUsuarioDTO(usuario.id, usuario.nome),
+    );
+
+    return listaDeUsuarios;
   }
 }
