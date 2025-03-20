@@ -23,7 +23,9 @@ export class UsuarioController {
   ) {}
 
   @Post()
-  cadastrar(@Body() dadosDoUsuario: DadosDeCadastroUsuarioDTO): object {
+  async cadastrar(
+    @Body() dadosDoUsuario: DadosDeCadastroUsuarioDTO,
+  ): Promise<object> {
     const usuarioEntity = new UsuarioEntity();
 
     usuarioEntity.email = dadosDoUsuario.email;
@@ -31,7 +33,7 @@ export class UsuarioController {
     usuarioEntity.nome = dadosDoUsuario.nome;
     usuarioEntity.id = uuid();
 
-    this.usuarioRepository.salvar(usuarioEntity);
+    await this.usuarioService.cadastrarUsuario(usuarioEntity);
 
     return {
       usuario: new DadosParaListagemUsuarioDTO(
@@ -49,11 +51,11 @@ export class UsuarioController {
   }
 
   @Put('/:id')
-  atualizar(
+  async atualizar(
     @Param('id') id: string,
     @Body() dadosParaAtualizar: DadosParaAtualizacaoUsuarioDTO,
   ) {
-    const usuarioAtulizado = this.usuarioRepository.atualizar(
+    const usuarioAtulizado = await this.usuarioService.atualizarUsuario(
       id,
       dadosParaAtualizar,
     );
@@ -66,7 +68,7 @@ export class UsuarioController {
 
   @Delete('/:id')
   deletar(@Param('id') id: string) {
-    const usuarioRemovido = this.usuarioRepository.remover(id);
+    const usuarioRemovido = this.usuarioService.deletarUsuario(id);
 
     return {
       usuario: usuarioRemovido,
