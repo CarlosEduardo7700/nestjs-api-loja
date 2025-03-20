@@ -13,10 +13,14 @@ import { UsuarioEntity } from './usuario.entity';
 import { v4 as uuid } from 'uuid';
 import { DadosParaListagemUsuarioDTO } from './dto/DadosParaListagemUsuario.dto';
 import { DadosParaAtualizacaoUsuarioDTO } from './dto/DadosParaAtualizacaoUsuario.dto';
+import { UsuarioService } from './usuario.service';
 
 @Controller('/usuarios')
 export class UsuarioController {
-  constructor(private usuarioRepository: UsuarioRepository) {}
+  constructor(
+    private usuarioRepository: UsuarioRepository,
+    private usuarioService: UsuarioService,
+  ) {}
 
   @Post()
   cadastrar(@Body() dadosDoUsuario: DadosDeCadastroUsuarioDTO): object {
@@ -39,12 +43,8 @@ export class UsuarioController {
   }
 
   @Get()
-  listarTodos(): DadosParaListagemUsuarioDTO[] {
-    const usuariosCadastrados = this.usuarioRepository.listar();
-    const listaDeUsuarios = usuariosCadastrados.map(
-      (usuario) => new DadosParaListagemUsuarioDTO(usuario.id, usuario.nome),
-    );
-
+  async listarTodos(): Promise<DadosParaListagemUsuarioDTO[]> {
+    const listaDeUsuarios = await this.usuarioService.listarUsuarios();
     return listaDeUsuarios;
   }
 
