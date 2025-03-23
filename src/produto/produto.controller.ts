@@ -4,13 +4,19 @@ import { DadosDeCadastroProdutoDTO } from './dto/DadosDeCadastroProduto.dto';
 import { ProdutoEntity } from './produto.entity';
 import { v4 } from 'uuid';
 import { DadosParaAtualizacaoProdutoDTO } from './dto/DadosParaAtualizacaoProduto.dto';
+import { ProdutoService } from './produto.service';
 
 @Controller('/produtos')
 export class ProdutoController {
-  constructor(private produtoRepository: ProdutoRepository) {}
+  constructor(
+    private produtoRepository: ProdutoRepository,
+    private readonly produtoService: ProdutoService,
+  ) {}
 
   @Post()
-  cadastrar(@Body() dadosDoProduto: DadosDeCadastroProdutoDTO): object {
+  async cadastrar(
+    @Body() dadosDoProduto: DadosDeCadastroProdutoDTO,
+  ): Promise<object> {
     const produtoEntity = new ProdutoEntity();
 
     produtoEntity.nome = dadosDoProduto.nome;
@@ -22,7 +28,7 @@ export class ProdutoController {
     produtoEntity.categoria = dadosDoProduto.categoria;
     produtoEntity.id = v4();
 
-    this.produtoRepository.salvar(produtoEntity);
+    await this.produtoService.cadastrarProduto(produtoEntity);
 
     return {
       produto: produtoEntity,
