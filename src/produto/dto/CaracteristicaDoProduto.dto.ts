@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { IsNotEmpty, IsString } from 'class-validator';
+import { ProdutoEntity } from '../produto.entity';
 
 export class CaracteristicaDoProdutoDTO {
+  id: string;
+
   @IsString()
   @IsNotEmpty()
   nome: string;
@@ -9,4 +12,6 @@ export class CaracteristicaDoProdutoDTO {
   @IsString()
   @IsNotEmpty()
   descricao: string;
+
+  produto: ProdutoEntity;
 }

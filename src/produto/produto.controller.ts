@@ -23,7 +23,7 @@ export class ProdutoController {
     produtoEntity.valor = dadosDoProduto.valor;
     produtoEntity.quantidadeDisponivel = dadosDoProduto.quantidadeDisponivel;
     produtoEntity.descricao = dadosDoProduto.descricao;
-    // produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
+    produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
     // produtoEntity.imagens = dadosDoProduto.imagens;
     produtoEntity.categoria = dadosDoProduto.categoria;
     produtoEntity.id = v4();

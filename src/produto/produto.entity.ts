@@ -3,9 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CaracteristicaDoProdutoEntity } from './caracteristicaDoProduto.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -29,6 +31,13 @@ export class ProdutoEntity {
 
   @Column({ name: 'categoria', length: 100, nullable: false })
   categoria: string;
+
+  @OneToMany(
+    () => CaracteristicaDoProdutoEntity,
+    (caracteristicasDoProdutoEntity) => caracteristicasDoProdutoEntity.produto,
+    { cascade: true, eager: true },
+  )
+  caracteristicas: CaracteristicaDoProdutoEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
